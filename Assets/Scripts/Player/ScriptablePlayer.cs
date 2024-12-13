@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new Player", menuName = "Scriptable Player")]
 public class ScriptablePlayer : ScriptableObject
 {
-    public PlayerColor playerColor;
-    public BasePlayer playerPrefab;
+    public PlayerColor PlayerColor;
+    public Player PlayerPrefab;
 }
 
 public enum PlayerColor

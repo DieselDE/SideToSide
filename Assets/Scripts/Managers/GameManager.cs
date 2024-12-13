@@ -1,34 +1,45 @@
+using System.Runtime.Serialization;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager _instance;
-    public GameState _state;
+    public static GameManager Instance;
+    public GameState State;
 
     void Awake()
     {
-        _instance = this;
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
 
     void Start()
     {
-        updateGameState(GameState.PlayerMove);
+        PlayerManager.Instance.ChangePlayerState(false);
+        ObstacleManager.Instance.ChangeObstacleSpawnState(true);
+
+        PlayerManager.Instance.SpawnPlayer();
+        WallManager.Instance.SpawnWalls();
+        UpdateGameState(GameState.PlayerMove);
     }
 
-    public void updateGameState(GameState newState)
+    public void UpdateGameState(GameState newState)
     {
-        _state = newState;
+        State = newState;
 
-        switch(_state)
+        switch(State)
         {
             case GameState.PlayerMove:
-                PlayerManager._instance.playerEnd(true);
+                PlayerManager.Instance?.ChangePlayerState(true);
                 break;
             case GameState.End:
-                PlayerManager._instance.playerEnd(false);
+                PlayerManager.Instance?.ChangePlayerState(false);
                 break;
             default:
-                Debug.LogError("Problems with GameState {_state}");
+                Debug.LogError($"Problems with GameState {State}");
                 break;
         }
     }

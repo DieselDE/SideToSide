@@ -2,31 +2,50 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public static PlayerManager _instance;
-    private bool PlayerCanMove;
+    private Player player;
+    private bool playerCanMove;
+
+    public static PlayerManager Instance;
+    public ScriptablePlayer PlayerData;
 
     void Awake()
     {
-        _instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
 
-    void Start()
+    public void SpawnPlayer()
     {
-        PlayerCanMove = false;
+        if(PlayerData == null || PlayerData.PlayerPrefab == null)
+        {
+            Debug.LogError("PlayerData or PlayerPrefab is not assigned in the Inspector!");
+            return;
+        }
+
+        player = Instantiate(PlayerData.PlayerPrefab, Vector3.zero, Quaternion.identity);
+        player.name = PlayerData.name;
+
+        player.SpawnPlayer(PlayerData);
+
+        Debug.Log($"Player '{player.name}' spawned successfully with color '{PlayerData.PlayerColor}'!");
     }
 
-    void Update()
+    public Player GetPlayer()
     {
-
+        return player;
     }
 
-    public void playerEnd(bool state)
+    public void ChangePlayerState(bool state)
     {
-        PlayerCanMove = state;
+        playerCanMove = state;
     }
 
-    public bool playerState()
+    public bool PlayerSpawnState()
     {
-        return PlayerCanMove;
+        return playerCanMove;
     }
 }
