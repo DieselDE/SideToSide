@@ -4,10 +4,22 @@ public class Obstacles : MonoBehaviour
 {
     private ScriptableObstacle scriptableObstacle;
     private Vector2 direction;
+    private float obstacleSpeed;
+
+    void Start()
+    {
+        direction = Vector2.down;
+    }
+
+    private void Update()
+    {
+        MoveObstacle(direction);
+    }
 
     public void SpawnObstacle(ScriptableObstacle data)
     {
         scriptableObstacle = data;
+        obstacleSpeed = 0.5f; // change this
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
@@ -36,5 +48,16 @@ public class Obstacles : MonoBehaviour
             case ObstacleColor.Black: return Color.black;
             default: return Color.white;
         }
+    }
+
+    public void SetObstacleSpeed(float newSpeed)
+    {
+        obstacleSpeed = newSpeed;
+    }
+
+    public void MoveObstacle(Vector2 direction)
+    {
+        Vector3 newPosition = transform.position + (Vector3)direction * obstacleSpeed * Time.deltaTime;
+        transform.position = newPosition;
     }
 }

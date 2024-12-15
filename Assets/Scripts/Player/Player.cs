@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float playerSpeed;
     private ScriptablePlayer scriptablePlayer;
     private Vector2 direction;
+    private float playerSpeed;
 
     public void SpawnPlayer(ScriptablePlayer data)
     {
         scriptablePlayer = data;
-        playerSpeed = 100f;
+        playerSpeed = 100f; // change this
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if(spriteRenderer != null)
@@ -91,6 +91,11 @@ public class Player : MonoBehaviour
 
             ObstacleManager.Instance.SpawnObstacle();
         }
+    }
+
+    public void SetPlayerSpeed(float newSpeed)
+    {
+        playerSpeed = newSpeed;
     }
 
     private void MovePlayer(Vector2 direction)
