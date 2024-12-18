@@ -1,19 +1,19 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class ObstacleManager : MonoBehaviour
 {
-    private Obstacles obstacle;
     private bool obstacleCanSpawn;
     private float obstacleSpeed;
-    private Vector3 obstacleSpawn;
+    private float obstacleSpawnHeight;
     private float obstacleDeleteHeight;
 
     public ScriptableObstacle ObstacleData;
     public static ObstacleManager Instance;
 
-    private void Awake()
+    void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -21,39 +21,38 @@ public class ObstacleManager : MonoBehaviour
         Instance = this;
     }
 
+    public void StartUp(bool canSpawn, float speed, float spawnHeight, float deleteHeight)
+    {
+        ChangeObstacleSpawnState(canSpawn);
+        ChangeObstacleSpeed(speed);
+        ChangeObstacleSpawnHeight(spawnHeight);
+        ChangeObstacleDeleteHeight(deleteHeight);
+
+        Debug.Log("ObstacleManager successfully initialized.");
+    }
+
+    public bool GetObstacleSpawnState() { return obstacleCanSpawn; }
+    public void ChangeObstacleSpawnState(bool newState) { obstacleCanSpawn = newState; }
+
+    public float GetObstacleSpeed() { return obstacleSpeed; }
+    public void ChangeObstacleSpeed(float newSpeed) { obstacleSpeed = newSpeed; }
+
+    public float GetObstacleSpawnHeight() { return obstacleSpawnHeight; }
+    public void ChangeObstacleSpawnHeight(float newHeight) { obstacleSpawnHeight = newHeight; }
+
+    public float GetObstacleDeleteHeight() { return obstacleDeleteHeight; }
+    public void ChangeObstacleDeleteHeight(float newHeight) { obstacleDeleteHeight = newHeight; }
+
     public void SpawnObstacle()
     {
-        if(!obstacleCanSpawn)
+        if (ObstacleData == null || ObstacleData.ObstaclePrefab == null)
         {
-            Debug.Log("Obstacle cant spawn");
-            return;
-        }
-        if(ObstacleData == null || ObstacleData.ObstaclePrefab == null)
-        {
-            Debug.LogError("ObstacleData or ObstaclePrefab is not assigned in the Inspector!");
+            Debug.LogError("ObstacleData or ObstaclePrefab is not assigned!");
             return;
         }
 
-        obstacle = Instantiate(ObstacleData.ObstaclePrefab, Vector3.zero, Quaternion.identity);
-        obstacle.name = ObstacleData.name;
-
-        obstacle.SpawnObstacle(ObstacleData);
-
-        Debug.Log($"Obstacle '{obstacle.name}' spawned successfully with color '{ObstacleData.ObstacleColor}' and form '{ObstacleData.ObstacleForm}'");
-    }
-
-    public Obstacles GetObstacle()
-    {
-        return obstacle;
-    }
-
-    public void ChangeObstacleSpawnState(bool state)
-    {
-        obstacleCanSpawn = state;
-    }
-
-    public bool ObstacleSpawnState()
-    {
-        return obstacleCanSpawn;
+        Vector3 spawnPosition = new Vector2(Random.Range(-5f,5f), obstacleSpawnHeight);
+        Obstacles newObstacle = Instantiate(ObstacleData.ObstaclePrefab, spawnPosition, Quaternion.identity);
+        newObstacle.InitializeObstacle(ObstacleData);
     }
 }

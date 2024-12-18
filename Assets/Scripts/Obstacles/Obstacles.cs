@@ -2,34 +2,31 @@ using UnityEngine;
 
 public class Obstacles : MonoBehaviour
 {
-    private ScriptableObstacle scriptableObstacle;
     private Vector2 direction;
-    private float obstacleSpeed;
 
     void Start()
     {
         direction = Vector2.down;
     }
 
-    private void Update()
+    void Update()
     {
         MoveObstacle(direction);
+        CheckDeleteHeight();
     }
 
-    public void SpawnObstacle(ScriptableObstacle data)
+    public void InitializeObstacle(ScriptableObstacle data)
     {
-        scriptableObstacle = data;
-        obstacleSpeed = 0.5f; // change this
-
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
-            spriteRenderer.color = GetColorFromObstacleColor(scriptableObstacle.ObstacleColor);
+            spriteRenderer.color = GetColorFromObstacleColor(data.ObstacleColor);
         }
     }
-    private Color GetColorFromObstacleColor(ObstacleColor ObstacleColor)
+
+    private Color GetColorFromObstacleColor(ObstacleColor color)
     {
-        switch (ObstacleColor)
+        switch (color)
         {
             case ObstacleColor.Red: return Color.red;
             case ObstacleColor.Orange: return new Color(1f, 0.5f, 0f);
@@ -50,14 +47,19 @@ public class Obstacles : MonoBehaviour
         }
     }
 
-    public void SetObstacleSpeed(float newSpeed)
-    {
-        obstacleSpeed = newSpeed;
-    }
-
     public void MoveObstacle(Vector2 direction)
     {
-        Vector3 newPosition = transform.position + (Vector3)direction * obstacleSpeed * Time.deltaTime;
-        transform.position = newPosition;
+        float speed = ObstacleManager.Instance.GetObstacleSpeed();
+        transform.position += (Vector3)direction * speed * Time.deltaTime;
+    }
+
+    public void CheckDeleteHeight()
+    {
+        float deleteHeight = ObstacleManager.Instance.GetObstacleDeleteHeight();
+
+        if (transform.position.y <= deleteHeight)
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -18,6 +18,12 @@ public class PlayerManager : MonoBehaviour
         Instance = this;
     }
 
+    public void StartUp()
+    {
+        SpawnPlayer();
+    }
+
+
     public void SpawnPlayer()
     {
         if(PlayerData == null || PlayerData.PlayerPrefab == null)

@@ -15,6 +15,11 @@ public class WallManager : MonoBehaviour
         Instance = this;
     }
 
+    public void StartUp()
+    {
+        SpawnWalls();
+    }
+
     public void SpawnWalls()
     {
         if(WallPrefab == null)
@@ -23,8 +28,8 @@ public class WallManager : MonoBehaviour
             return;
         }
 
-        Vector3 leftWallPosition = new Vector3(-10, 0, 0);
-        Vector3 rightWallPosition = new Vector3(10, 0, 0);
+        Vector3 leftWallPosition = new Vector3(-6f, 0, 0);
+        Vector3 rightWallPosition = new Vector3(6f, 0, 0);
 
         GameObject leftWall = Instantiate(WallPrefab, leftWallPosition, Quaternion.identity);
         leftWall.name = "LeftWall";

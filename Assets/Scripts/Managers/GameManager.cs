@@ -18,11 +18,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        PlayerManager.Instance.ChangePlayerState(false);
-        ObstacleManager.Instance.ChangeObstacleSpawnState(true);
+        PlayerManager.Instance.StartUp();
+        WallManager.Instance.StartUp();
+        ObstacleManager.Instance.StartUp(true, 2f, 5f, -5f);
 
-        PlayerManager.Instance.SpawnPlayer();
-        WallManager.Instance.SpawnWalls();
         UpdateGameState(GameState.PlayerMove);
     }
 

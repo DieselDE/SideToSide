@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d74992e5d554b09478c885f248ceacb6, type: 3}
   m_Name: SquareObstacle
   m_EditorClassIdentifier: 
-  ObstacleColor: 10
+  ObstacleColor: 1
   ObstacleForm: 0
-  ObstaclePrefab: {fileID: 5914511471491522797, guid: 4a4ec40d94a0bb04cb367856bc145911, type: 3}
+  ObstaclePrefab: {fileID: 8192427126020064911, guid: 4a4ec40d94a0bb04cb367856bc145911, type: 3}

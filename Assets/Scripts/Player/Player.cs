@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public void SpawnPlayer(ScriptablePlayer data)
     {
         scriptablePlayer = data;
-        playerSpeed = 100f; // change this
+        playerSpeed = 100f; // have to change this
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if(spriteRenderer != null)
@@ -82,11 +82,17 @@ public class Player : MonoBehaviour
         }
 
         // for testing new stuff in safe enviroment
-        if(Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.N))
         {
-            if(!ObstacleManager.Instance.ObstacleSpawnState())
+            if (ObstacleManager.Instance.GetObstacleSpawnState())
             {
                 ObstacleManager.Instance.ChangeObstacleSpawnState(true);
+            }
+
+            if (ObstacleManager.Instance.ObstacleData == null)
+            {
+                Debug.LogError("ObstacleData is not assigned in the ObstacleManager!");
+                return;
             }
 
             ObstacleManager.Instance.SpawnObstacle();
