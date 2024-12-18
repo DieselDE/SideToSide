@@ -32,10 +32,10 @@ public class GameManager : MonoBehaviour
         switch(State)
         {
             case GameState.PlayerMove:
-                PlayerManager.Instance?.ChangePlayerState(true);
+                PlayerManager.Instance.ChangePlayerMoveState(true);
                 break;
             case GameState.End:
-                PlayerManager.Instance?.ChangePlayerState(false);
+                PlayerManager.Instance.ChangePlayerMoveState(false);
                 break;
             default:
                 Debug.LogError($"Problems with GameState {State}");

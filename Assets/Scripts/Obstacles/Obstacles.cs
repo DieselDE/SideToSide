@@ -15,12 +15,12 @@ public class Obstacles : MonoBehaviour
         CheckDeleteHeight();
     }
 
-    public void InitializeObstacle(ScriptableObstacle data)
+    public void InitializeObstacle()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
-            spriteRenderer.color = GetColorFromObstacleColor(data.ObstacleColor);
+            spriteRenderer.color = GetColorFromObstacleColor(ObstacleManager.Instance.ObstacleData.ObstacleColor);
         }
     }
 

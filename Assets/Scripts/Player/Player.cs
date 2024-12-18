@@ -2,19 +2,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private ScriptablePlayer scriptablePlayer;
     private Vector2 direction;
-    private float playerSpeed;
 
-    public void SpawnPlayer(ScriptablePlayer data)
+    public void SpawnPlayer()
     {
-        scriptablePlayer = data;
-        playerSpeed = 100f; // have to change this
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if(spriteRenderer != null)
         {
-            spriteRenderer.color = GetColorFromPlayerColor(scriptablePlayer.PlayerColor);
+            spriteRenderer.color = GetColorFromPlayerColor(PlayerManager.Instance.PlayerData.PlayerColor);
         }
     }
 
@@ -48,6 +44,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        // Change PlayerMoveState
         if(Input.GetKeyDown(KeyCode.Space))
         {
             if(GameManager.Instance.State == GameState.PlayerMove)
@@ -60,22 +57,31 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(PlayerManager.Instance.PlayerSpawnState())
+        // PlayerMovement
+        if(PlayerManager.Instance.GetPlayerMoveState())
         {
-            if(Input.GetKey(KeyCode.D) && CanMove(Vector2.right))
+            if(Input.GetKey(KeyCode.D))
             {
                 direction = Vector2.right;
             }
-            if(Input.GetKey(KeyCode.A) && CanMove(Vector2.left))
+            if(Input.GetKey(KeyCode.A))
             {
                 direction = Vector2.left;
             }
-            if(direction != Vector2.zero && CanMove(direction))
+            if(direction != Vector2.zero && CanMove())
             {
-                MovePlayer(direction);
+                MovePlayer();
+            }
+
+            // check if obstacle hit
+            if (HitObstacle())
+            {
+                Debug.Log("Hit an Obstacle");
+                GameManager.Instance.UpdateGameState(GameState.End);
             }
         }
 
+        // Exit application
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
@@ -99,18 +105,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SetPlayerSpeed(float newSpeed)
+    public void MovePlayer()
     {
-        playerSpeed = newSpeed;
-    }
-
-    private void MovePlayer(Vector2 direction)
-    {
-        Vector3 newPosition = transform.position + (Vector3)direction * playerSpeed * Time.deltaTime;
+        Vector3 newPosition = transform.position + (Vector3)direction * PlayerManager.Instance.GetPlayerSpeed() * Time.deltaTime;
         transform.position = newPosition;
     }
 
-    private bool CanMove(Vector2 direction)
+    public bool CanMove()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 0.55f);
 
@@ -123,5 +124,21 @@ public class Player : MonoBehaviour
         }
 
         return true;
+    }
+
+    public bool HitObstacle()
+    {
+        RaycastHit2D hitSide = Physics2D.Raycast(transform.position, direction, 0.1f);
+        RaycastHit2D hitUp = Physics2D.Raycast(transform.position, Vector2.up, 0.1f);
+
+        if( hitSide.collider != null || hitUp.collider != null)
+        {
+            if(hitSide.collider.gameObject.name == "SquareObstacle(Clone)" || hitUp.collider.gameObject.name == "SquareObstacle(Clone)")
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

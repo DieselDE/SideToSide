@@ -4,6 +4,7 @@ public class PlayerManager : MonoBehaviour
 {
     private Player player;
     private bool playerCanMove;
+    private float playerSpeed;
 
     public static PlayerManager Instance;
     public ScriptablePlayer PlayerData;
@@ -21,8 +22,17 @@ public class PlayerManager : MonoBehaviour
     public void StartUp()
     {
         SpawnPlayer();
+        ChangePlayerSpeed(100f);
     }
 
+    public Player GetPlayer() { return player; }
+    public void ChangePlayer(Player newPlayer) {  player = newPlayer; }
+
+    public bool GetPlayerMoveState() { return playerCanMove; }
+    public void ChangePlayerMoveState(bool state) { playerCanMove = state; }
+
+    public float GetPlayerSpeed() { return playerSpeed; }
+    public void ChangePlayerSpeed(float speed) { playerSpeed = speed; }
 
     public void SpawnPlayer()
     {
@@ -35,23 +45,8 @@ public class PlayerManager : MonoBehaviour
         player = Instantiate(PlayerData.PlayerPrefab, Vector3.zero, Quaternion.identity);
         player.name = PlayerData.name;
 
-        player.SpawnPlayer(PlayerData);
+        player.SpawnPlayer();
 
         Debug.Log($"Player '{player.name}' spawned successfully with color '{PlayerData.PlayerColor}'!");
-    }
-
-    public Player GetPlayer()
-    {
-        return player;
-    }
-
-    public void ChangePlayerState(bool state)
-    {
-        playerCanMove = state;
-    }
-
-    public bool PlayerSpawnState()
-    {
-        return playerCanMove;
     }
 }

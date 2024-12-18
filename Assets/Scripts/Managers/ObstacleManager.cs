@@ -53,6 +53,6 @@ public class ObstacleManager : MonoBehaviour
 
         Vector3 spawnPosition = new Vector2(Random.Range(-5f,5f), obstacleSpawnHeight);
         Obstacles newObstacle = Instantiate(ObstacleData.ObstaclePrefab, spawnPosition, Quaternion.identity);
-        newObstacle.InitializeObstacle(ObstacleData);
+        newObstacle.InitializeObstacle();
     }
 }
