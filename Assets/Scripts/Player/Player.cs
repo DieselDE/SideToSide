@@ -86,23 +86,6 @@ public class Player : MonoBehaviour
         {
             Application.Quit();
         }
-
-        // for testing new stuff in safe enviroment
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            if (ObstacleManager.Instance.GetObstacleSpawnState())
-            {
-                ObstacleManager.Instance.ChangeObstacleSpawnState(true);
-            }
-
-            if (ObstacleManager.Instance.ObstacleData == null)
-            {
-                Debug.LogError("ObstacleData is not assigned in the ObstacleManager!");
-                return;
-            }
-
-            ObstacleManager.Instance.SpawnObstacle();
-        }
     }
 
     public void MovePlayer()

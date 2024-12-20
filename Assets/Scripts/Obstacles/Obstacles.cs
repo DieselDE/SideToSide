@@ -49,8 +49,11 @@ public class Obstacles : MonoBehaviour
 
     public void MoveObstacle(Vector2 direction)
     {
-        float speed = ObstacleManager.Instance.GetObstacleSpeed();
-        transform.position += (Vector3)direction * speed * Time.deltaTime;
+        if(ObstacleManager.Instance.GetObstacleSpawnState())
+        {
+            float speed = ObstacleManager.Instance.GetObstacleSpeed();
+            transform.position += (Vector3)direction * speed * Time.deltaTime;
+        }
     }
 
     public void CheckDeleteHeight()

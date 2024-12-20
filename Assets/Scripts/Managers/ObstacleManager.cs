@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
+using System.Collections;
 
 public class ObstacleManager : MonoBehaviour
 {
@@ -8,17 +8,36 @@ public class ObstacleManager : MonoBehaviour
     private float obstacleSpawnHeight;
     private float obstacleDeleteHeight;
 
+    private float spawnInterval = 1f;
+    private float minimumSpawnInterval = 0.2f;
+    private float spawnIntervalDecrement = 0.01f;
+    private Coroutine spawnCoroutine;
+
     public ScriptableObstacle ObstacleData;
     public static ObstacleManager Instance;
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
+        if(Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
         Instance = this;
+    }
+
+    private IEnumerator SpawnObstaclesRoutine()
+    {
+        while(true)
+        {
+            SpawnObstacle();
+            yield return new WaitForSeconds(spawnInterval);
+
+            if(spawnInterval > minimumSpawnInterval)
+            {
+                spawnInterval -= spawnIntervalDecrement;
+            }
+        }
     }
 
     public void StartUp(bool canSpawn, float speed, float spawnHeight, float deleteHeight)
@@ -27,6 +46,11 @@ public class ObstacleManager : MonoBehaviour
         ChangeObstacleSpeed(speed);
         ChangeObstacleSpawnHeight(spawnHeight);
         ChangeObstacleDeleteHeight(deleteHeight);
+
+        if(obstacleCanSpawn && spawnCoroutine == null)
+        {
+            spawnCoroutine = StartCoroutine(SpawnObstaclesRoutine());
+        }
 
         Debug.Log("ObstacleManager successfully initialized.");
     }
@@ -45,14 +69,35 @@ public class ObstacleManager : MonoBehaviour
 
     public void SpawnObstacle()
     {
-        if (ObstacleData == null || ObstacleData.ObstaclePrefab == null)
+        if(ObstacleData == null || ObstacleData.ObstaclePrefab == null)
         {
             Debug.LogError("ObstacleData or ObstaclePrefab is not assigned!");
             return;
         }
+        if(!obstacleCanSpawn)
+        {
+            return;
+        }
 
-        Vector3 spawnPosition = new Vector2(Random.Range(-5f,5f), obstacleSpawnHeight);
+        Vector3 spawnPosition = new Vector2(GetRandomSpawn(-5f, 5f), obstacleSpawnHeight);
         Obstacles newObstacle = Instantiate(ObstacleData.ObstaclePrefab, spawnPosition, Quaternion.identity);
         newObstacle.InitializeObstacle();
+    }
+
+    public float GetRandomSpawn(float start, float end)
+    {
+        float randomSpawn = Random.Range(start, end);
+        randomSpawn = Mathf.Round(randomSpawn * 2) / 2;
+
+        return randomSpawn;
+    }
+
+    public void StopSpawning()
+    {
+        if(spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
+        }
     }
 }

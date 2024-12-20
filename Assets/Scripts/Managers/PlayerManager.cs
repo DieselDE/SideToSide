@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour
     public void StartUp()
     {
         SpawnPlayer();
-        ChangePlayerSpeed(100f);
+        ChangePlayerSpeed(5f);
     }
 
     public Player GetPlayer() { return player; }
