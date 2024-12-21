@@ -87,7 +87,7 @@ public class ObstacleManager : MonoBehaviour
     public float GetRandomSpawn(float start, float end)
     {
         float randomSpawn = Random.Range(start, end);
-        randomSpawn = Mathf.Round(randomSpawn * 2) / 2;
+        randomSpawn = Mathf.Round(randomSpawn);
 
         return randomSpawn;
     }

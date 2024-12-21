@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         PlayerManager.Instance.StartUp();
         WallManager.Instance.StartUp();
         ObstacleManager.Instance.StartUp(true, 2f, 5f, -5f);
-        Counter.Instance.StartUp();
+        CounterManager.Instance.StartUp();
 
         UpdateGameState(GameState.PlayerMove);
     }
