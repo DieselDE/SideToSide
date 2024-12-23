@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         PlayerManager.Instance.StartUp();
         WallManager.Instance.StartUp();
         ObstacleManager.Instance.StartUp(true, 2f, 5f, -5f);
-        CounterManager.Instance.StartUp();
+        Counter.Instance.StartUp();
 
         UpdateGameState(GameState.PlayerMove);
     }
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     {
         State = newState;
 
-        switch(State)
+        switch (State)
         {
             case GameState.PlayerMove:
                 PlayerManager.Instance.ChangePlayerMoveState(true);

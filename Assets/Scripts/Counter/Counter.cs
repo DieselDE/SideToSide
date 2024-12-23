@@ -3,28 +3,34 @@ using UnityEngine;
 
 public class Counter : MonoBehaviour
 {
-    private int currentValue;
-
+    public static Counter Instance;
+    public int CurrentValue;
     public TMP_Text CounterText;
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     public void StartUp()
     {
-        currentValue = 0;
-        UpdateCounterText();
+        CurrentValue = 0;
+        CounterText.text = CurrentValue.ToString();
+
         Debug.Log("Counter initialized");
     }
 
-    public void Increment()
+    void Update()
     {
-        currentValue++;
-        UpdateCounterText();
-    }
-
-    private void UpdateCounterText()
-    {
-        if (CounterText != null)
+        if (GameManager.Instance.State == GameState.PlayerMove)
         {
-            CounterText.text = ((int)currentValue / 100).ToString();
+            CurrentValue++;
+            CounterText.text = ((int)CurrentValue / 100).ToString();
         }
     }
 }
