@@ -28,8 +28,8 @@ public class PlayerManager : MonoBehaviour
     public Player GetPlayer() { return player; }
     public void ChangePlayer(Player newPlayer) {  player = newPlayer; }
 
-    public bool GetPlayerMoveState() { return playerCanMove; }
-    public void ChangePlayerMoveState(bool state) { playerCanMove = state; }
+    public bool GetGameState() { return playerCanMove; }
+    public void ChangeGameState(bool state) { playerCanMove = state; }
 
     public float GetPlayerSpeed() { return playerSpeed; }
     public void ChangePlayerSpeed(float speed) { playerSpeed = speed; }
@@ -39,6 +39,11 @@ public class PlayerManager : MonoBehaviour
         if(PlayerData == null || PlayerData.PlayerPrefab == null)
         {
             Debug.LogError("PlayerData or PlayerPrefab is not assigned in the Inspector!");
+            return;
+        }
+        if(player != null)
+        {
+            Debug.LogError("Player already exists!");
             return;
         }
 

@@ -44,21 +44,21 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Change PlayerMoveState
+        // Change GameState
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            if(GameManager.Instance.State == GameState.PlayerMove)
+            if(GameManager.Instance.State == GameState.Game)
             {
-                GameManager.Instance.UpdateGameState(GameState.End);
+                GameManager.Instance.UpdateGameState(GameState.Defeat);
             }
-            else if(GameManager.Instance.State == GameState.End)
+            else if(GameManager.Instance.State == GameState.Defeat)
             {
-                GameManager.Instance.UpdateGameState(GameState.PlayerMove);
+                GameManager.Instance.UpdateGameState(GameState.Game);
             }
         }
 
-        // PlayerMovement
-        if(PlayerManager.Instance.GetPlayerMoveState())
+        // Gamement
+        if(PlayerManager.Instance.GetGameState())
         {
             if(Input.GetKey(KeyCode.D))
             {
@@ -77,7 +77,7 @@ public class Player : MonoBehaviour
             if (HitObstacle())
             {
                 Debug.Log("Hit an Obstacle");
-                GameManager.Instance.UpdateGameState(GameState.End);
+                GameManager.Instance.UpdateGameState(GameState.Defeat);
             }
         }
 

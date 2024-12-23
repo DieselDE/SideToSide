@@ -17,20 +17,20 @@ public class Counter : MonoBehaviour
         Instance = this;
     }
 
+    void Update()
+    {
+        if (GameManager.Instance.State == GameState.Game)
+        {
+            CurrentValue++;
+            CounterText.text = ((int)CurrentValue / 100).ToString();
+        }
+    }
+
     public void StartUp()
     {
         CurrentValue = 0;
         CounterText.text = CurrentValue.ToString();
 
         Debug.Log("Counter initialized");
-    }
-
-    void Update()
-    {
-        if (GameManager.Instance.State == GameState.PlayerMove)
-        {
-            CurrentValue++;
-            CounterText.text = ((int)CurrentValue / 100).ToString();
-        }
     }
 }

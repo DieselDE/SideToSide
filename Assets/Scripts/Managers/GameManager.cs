@@ -18,12 +18,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        PlayerManager.Instance.StartUp();
-        WallManager.Instance.StartUp();
-        ObstacleManager.Instance.StartUp(true, 2f, 5f, -5f);
-        Counter.Instance.StartUp();
-
-        UpdateGameState(GameState.PlayerMove);
+        UpdateGameState(GameState.Menu);
     }
 
     public void UpdateGameState(GameState newState)
@@ -32,12 +27,19 @@ public class GameManager : MonoBehaviour
 
         switch (State)
         {
-            case GameState.PlayerMove:
-                PlayerManager.Instance.ChangePlayerMoveState(true);
+            case GameState.Menu:
+                break;
+            case GameState.Game:
+                PlayerManager.Instance.StartUp();
+                WallManager.Instance.StartUp();
+                ObstacleManager.Instance.StartUp(true, 2f, 5f, -5f);
+                Counter.Instance.StartUp();
+
+                PlayerManager.Instance.ChangeGameState(true);
                 ObstacleManager.Instance.ChangeObstacleSpawnState(true);
                 break;
-            case GameState.End:
-                PlayerManager.Instance.ChangePlayerMoveState(false);
+            case GameState.Defeat:
+                PlayerManager.Instance.ChangeGameState(false);
                 ObstacleManager.Instance.ChangeObstacleSpawnState(false);
                 break;
             default:
@@ -49,7 +51,8 @@ public class GameManager : MonoBehaviour
 
 public enum GameState
 {
-    PlayerMove,
-    End,
+    Menu,
+    Game,
+    Defeat,
     Test
 }
