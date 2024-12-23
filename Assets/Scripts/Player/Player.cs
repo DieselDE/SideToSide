@@ -4,6 +4,47 @@ public class Player : MonoBehaviour
 {
     private Vector2 direction;
 
+    void Start()
+    {
+        direction = Vector2.zero;
+    }
+
+    void Update()
+    {
+        // Movement
+        if (PlayerManager.Instance.GetPlayerCanMove())
+        {
+            if (Input.GetKey(KeyCode.D))
+            {
+                direction = Vector2.right;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                direction = Vector2.left;
+            }
+            if (direction != Vector2.zero && CanMove())
+            {
+                MovePlayer();
+            }
+
+            // check if obstacle hit
+            if (HitObstacle())
+            {
+                Debug.Log("Hit an Obstacle");
+                GameManager.Instance.UpdateGameState(GameState.Defeat);
+            }
+        }
+
+        // Check for state of game
+        CheckDeleteState();
+
+        // Exit application
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
     public void SpawnPlayer()
     {
 
@@ -34,57 +75,6 @@ public class Player : MonoBehaviour
             case PlayerColor.LightGray: return new Color(0.83f, 0.83f, 0.83f);
             case PlayerColor.Black: return Color.black;
             default: return Color.white;
-        }
-    }
-
-    void Start()
-    {
-        direction = Vector2.zero;
-    }
-
-    void Update()
-    {
-        // Change GameState
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            if(GameManager.Instance.State == GameState.Game)
-            {
-                GameManager.Instance.UpdateGameState(GameState.Defeat);
-            }
-            else if(GameManager.Instance.State == GameState.Defeat)
-            {
-                GameManager.Instance.UpdateGameState(GameState.Game);
-            }
-        }
-
-        // Gamement
-        if(PlayerManager.Instance.GetGameState())
-        {
-            if(Input.GetKey(KeyCode.D))
-            {
-                direction = Vector2.right;
-            }
-            if(Input.GetKey(KeyCode.A))
-            {
-                direction = Vector2.left;
-            }
-            if(direction != Vector2.zero && CanMove())
-            {
-                MovePlayer();
-            }
-
-            // check if obstacle hit
-            if (HitObstacle())
-            {
-                Debug.Log("Hit an Obstacle");
-                GameManager.Instance.UpdateGameState(GameState.Defeat);
-            }
-        }
-
-        // Exit application
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
         }
     }
 
@@ -123,5 +113,13 @@ public class Player : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void CheckDeleteState()
+    {
+        if(GameManager.Instance.State == GameState.Defeat)
+        {
+            Destroy(gameObject);
+        }
     }
 }

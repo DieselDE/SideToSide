@@ -1,9 +1,9 @@
 using TMPro;
 using UnityEngine;
 
-public class Counter : MonoBehaviour
+public class CounterManager : MonoBehaviour
 {
-    public static Counter Instance;
+    public static CounterManager Instance;
     public int CurrentValue;
     public TMP_Text CounterText;
 
@@ -16,7 +16,6 @@ public class Counter : MonoBehaviour
         }
         Instance = this;
     }
-
     void Update()
     {
         UpdateText();

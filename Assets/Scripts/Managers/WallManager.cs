@@ -17,6 +17,11 @@ public class WallManager : MonoBehaviour
         Instance = this;
     }
 
+    void Update()
+    {
+        CheckDeleteState();
+    }
+
     public void StartUp()
     {
         SpawnWalls();
@@ -45,5 +50,14 @@ public class WallManager : MonoBehaviour
         RightWall.name = "RightWall";
 
         Debug.Log("Walls spawned successfully!");
+    }
+
+    public void CheckDeleteState()
+    {
+        if(GameManager.Instance.State == GameState.Defeat)
+        {
+            Destroy(LeftWall);
+            Destroy(RightWall);
+        }
     }
 }

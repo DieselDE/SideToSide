@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
         switch (State)
         {
             case GameState.Menu:
+                ButtonManager.Instance.StartUp();
                 break;
             case GameState.Game:
                 PlayerManager.Instance.StartUp();
@@ -35,12 +36,13 @@ public class GameManager : MonoBehaviour
                 ObstacleManager.Instance.StartUp(true, 2f, 5f, -5f);
                 Counter.Instance.StartUp();
 
-                PlayerManager.Instance.ChangeGameState(true);
+                PlayerManager.Instance.ChangePlayerCanMove(true);
                 ObstacleManager.Instance.ChangeObstacleSpawnState(true);
                 break;
             case GameState.Defeat:
-                PlayerManager.Instance.ChangeGameState(false);
+                PlayerManager.Instance.ChangePlayerCanMove(false);
                 ObstacleManager.Instance.ChangeObstacleSpawnState(false);
+                ObstacleManager.Instance.StopSpawning();
                 break;
             default:
                 Debug.LogError($"Problems with GameState {State}");

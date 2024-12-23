@@ -28,8 +28,8 @@ public class PlayerManager : MonoBehaviour
     public Player GetPlayer() { return player; }
     public void ChangePlayer(Player newPlayer) {  player = newPlayer; }
 
-    public bool GetGameState() { return playerCanMove; }
-    public void ChangeGameState(bool state) { playerCanMove = state; }
+    public bool GetPlayerCanMove() { return playerCanMove; }
+    public void ChangePlayerCanMove(bool state) { playerCanMove = state; }
 
     public float GetPlayerSpeed() { return playerSpeed; }
     public void ChangePlayerSpeed(float speed) { playerSpeed = speed; }

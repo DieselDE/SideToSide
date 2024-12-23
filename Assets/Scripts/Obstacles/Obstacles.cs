@@ -13,6 +13,7 @@ public class Obstacles : MonoBehaviour
     {
         MoveObstacle(direction);
         CheckDeleteHeight();
+        CheckDeleteState();
     }
 
     public void InitializeObstacle()
@@ -61,6 +62,14 @@ public class Obstacles : MonoBehaviour
         float deleteHeight = ObstacleManager.Instance.GetObstacleDeleteHeight();
 
         if (transform.position.y <= deleteHeight)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void CheckDeleteState()
+    {
+        if(GameManager.Instance.State == GameState.Defeat)
         {
             Destroy(gameObject);
         }
