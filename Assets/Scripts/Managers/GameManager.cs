@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
                 PlayerManager.Instance.StartUp();
                 WallManager.Instance.StartUp();
                 ObstacleManager.Instance.StartUp(true, 2f, 5f, -5f);
-                Counter.Instance.StartUp();
+                CounterManager.Instance.StartUp();
 
                 PlayerManager.Instance.ChangePlayerCanMove(true);
                 ObstacleManager.Instance.ChangeObstacleSpawnState(true);
@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour
                 PlayerManager.Instance.ChangePlayerCanMove(false);
                 ObstacleManager.Instance.ChangeObstacleSpawnState(false);
                 ObstacleManager.Instance.StopSpawning();
+
+                MenuManager.Instance.StartUp();
+                CounterManager.Instance.DeleteCounter();
                 break;
             default:
                 Debug.LogError($"Problems with GameState {State}");

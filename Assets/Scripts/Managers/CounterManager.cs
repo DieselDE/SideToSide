@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class CounterManager : MonoBehaviour
 {
+    private int CurrentValue;
+
     public static CounterManager Instance;
-    public int CurrentValue;
+    public GameObject CounterCanvasPrefab;
+    public GameObject CounterCanvas;
     public TMP_Text CounterText;
 
     void Awake()
@@ -18,16 +21,43 @@ public class CounterManager : MonoBehaviour
     }
     void Update()
     {
-        UpdateText();
+        if(GameManager.Instance.State == GameState.Game)
+        {
+            UpdateText();
+        }
     }
 
     public void StartUp()
     {
-        CurrentValue = 0;
-        CounterText.text = CurrentValue.ToString();
+        if(GameManager.Instance.State == GameState.Game)
+        {
+            SpawnCounter();
 
-        Debug.Log("Counter initialized");
+            CurrentValue = 0;
+            CounterText.text = CurrentValue.ToString();
+
+            Debug.Log("Counter initialized");
+        }
     }
+
+    public int GetCurrentValue() {  return CurrentValue; }
+    public void ChangeCurrentValue(int value) { CurrentValue = value; }
+
+    public void SpawnCounter()
+    {
+        CounterCanvas = Instantiate(CounterCanvasPrefab);
+
+        Transform textTransform = CounterCanvas.transform.Find("CounterText");
+        if (textTransform != null)
+        {
+            CounterText = textTransform.GetComponent<TMP_Text>();
+        }
+        else
+        {
+            Debug.LogError("Child object 'CounterText' not found in the canvas prefab!");
+        }
+    }
+
 
     public void AddToCounter()
     {
@@ -40,5 +70,10 @@ public class CounterManager : MonoBehaviour
         {
             CounterText.text = CurrentValue.ToString();
         }
+    }
+
+    public void DeleteCounter()
+    {
+        Destroy(CounterCanvas);
     }
 }

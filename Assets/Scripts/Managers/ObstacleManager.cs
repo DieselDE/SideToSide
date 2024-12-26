@@ -82,7 +82,7 @@ public class ObstacleManager : MonoBehaviour
         Vector3 spawnPosition = new Vector2(GetRandomSpawn(-5f, 5f), obstacleSpawnHeight);
         Obstacles newObstacle = Instantiate(ObstacleData.ObstaclePrefab, spawnPosition, Quaternion.identity);
         newObstacle.InitializeObstacle();
-        Counter.Instance.AddToCounter();
+        CounterManager.Instance.AddToCounter();
     }
 
     public float GetRandomSpawn(float start, float end)
